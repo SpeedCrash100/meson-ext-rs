@@ -38,14 +38,19 @@ impl Config {
         Ok(version)
     }
 
-    fn find_meson_in_system() -> Result<PathBuf> {
-        let Ok(target) = env::var("TARGET") else {
-            return Ok("meson".into());
-        };
-
+    fn find_meson_target_specific_env() -> Option<PathBuf> {
+        let target = env::var("TARGET").ok()?;
         let target_upper_case = target.to_uppercase().replace("-", "_");
         let target_specific_env = format!("MESON_{target_upper_case}");
-        if let Some(meson) = env::var_os(target_specific_env.as_str()) {
+        env::var_os(target_specific_env.as_str()).map(|x| x.into())
+    }
+
+    fn find_meson_in_system() -> Result<PathBuf> {
+        if let Some(meson) = Self::find_meson_target_specific_env() {
+            return Ok(meson);
+        }
+
+        if let Some(meson) = env::var_os("MESON") {
             return Ok(meson.into());
         }
 
