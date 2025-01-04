@@ -12,3 +12,9 @@ license = "MIT"
 repository = "https://github.com/SpeedCrash100/meson-ext-rs.git"
 
 [dependencies]
+semver = "1.0"
+thiserror = "2.0"
+
+
+[dev-dependencies]
+anyhow = "1"
