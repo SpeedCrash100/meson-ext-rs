@@ -18,6 +18,12 @@ pub enum Error {
     #[error("Meson exited with signal")]
     MesonExitedBySignal,
 
+    #[error("Meson configure failed: {0}")]
+    MesonConfiguredUnsuccessfully(i32),
+
+    #[error("Meson build failed: {0}")]
+    MesonBuildUnsuccessfully(i32),
+
     #[error("IO error: {0}")]
     IoError(#[from] std::io::Error),
 
